@@ -25,6 +25,12 @@ class JanusPlugin {
 
     /**
      *
+     * @type {onDataChannelListener}
+     */
+    onDataChannelListener = null;
+
+    /**
+     *
      * @type {boolean}
      */
     isWebRtcUp = false;
@@ -98,7 +104,7 @@ class JanusPlugin {
 
         this.pc.onicecandidate = async (event) => {
             if (!event.candidate || event.candidate.candidate.indexOf('endOfCandidates') > 0) {
-
+                await this.sendCandidateAsync({"completed": true});
             } else {
                 await this.sendCandidateAsync(event.candidate);
             }
@@ -147,6 +153,15 @@ class JanusPlugin {
         this.pc.oniceconnectionstatechange = (e) => {
             console.log('iceGatheringState', e.target.iceGatheringState);
         };
+
+        this.pc.ondatachannel = (e) => {
+            console.log('ondatachannel', e);
+            if(e.channel) {
+                if (this.onDataChannelListener && typeof this.onDataChannelListener === 'function') {
+                    this.onDataChannelListener(e.channel);
+                }
+            }
+        }
     };
 
     /**
@@ -163,6 +178,14 @@ class JanusPlugin {
      */
     setOnStreamListener = (listener) => {
         this.onStreamListener = listener;
+    };
+
+    /**
+     *
+     * @param listener {onDataChannelListener}
+     */
+    setOnDataChannelListener = (listener) => {
+        this.onDataChannelListener = listener;
     };
 
     send = (request, callback) => {

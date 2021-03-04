@@ -10,6 +10,10 @@ export default class Janus {
      */
     static RTCPeerConnection;
     /**
+     * @type {RTCDataChannel}
+     */
+    static RTCDataChannel;
+    /**
      * @type {RTCIceCandidate}
      */
     static RTCIceCandidate;
@@ -25,12 +29,14 @@ export default class Janus {
      *
      * @param RTCSessionDescription
      * @param RTCPeerConnection
+     * @param RTCDataChannel
      * @param RTCIceCandidate
      * @param MediaStream
      */
-    static setDependencies = ({RTCSessionDescription, RTCPeerConnection, RTCIceCandidate, MediaStream}) => {
+    static setDependencies = ({RTCSessionDescription, RTCPeerConnection, RTCDataChannel, RTCIceCandidate, MediaStream}) => {
         Janus.RTCSessionDescription = RTCSessionDescription;
         Janus.RTCPeerConnection = RTCPeerConnection;
+        Janus.RTCDataChannel = RTCDataChannel;
         Janus.RTCIceCandidate = RTCIceCandidate;
         Janus.MediaStream = MediaStream;
     };
